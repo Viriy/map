@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>大荔县数据管理平台</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link href='css/elusive-webfont.css' rel='stylesheet' type='text/css'>
+    <style>
+    body,html,#allmap{width:100%;height:100%;overflow:hidden;margin:0;font-family:"微软雅黑"}
+    a{text-decoration:none}
+    ul,li{list-style:none;margin:0;padding:0}
+    a{color:#666}
+    .map_wrap{position:relative;width:100%;height:100%}
+    .map_wrap nav{background:#fff;border-radius:100px;z-index:99}
+    .map_wrap nav a{padding:15px 24px;display:block}
+    .map_wrap nav a:hover,.map_wrap nav .active{background:#258CF2;color:#fff}
+
+
+    .m_nav{background:#589b14;position:absolute;z-index:99999;top:20px;left:20px}
+    .m_nav h2{padding:0;margin:0}
+	.m_nav h2 a{font-size:16px;display:block}
+	.m_nav li{position:relative;float:left}
+	.m_nav li:hover a{background:#5da92f}
+	.m_nav .active{background:#6ab41e}
+	.m_nav .icon{font-size:12px;margin-left:4px;vertical-align:top;*vertical-align:middle}
+	.nav_con{position:absolute;top:52px;left:0;z-index:66666;width:100%;display:none;background:#ecf0e8;font-size:16px;background:#5da92f;border-radius:0 0 6px 6px;overflow:hidden;padding:6px 0}
+	.nav_con a{display:block;border-bottom:1px solid #8bbb59;border-bottom:1px solid #8bbb59;line-height:40px;color:#fff;padding:5px 24px !important}
+	.nav_con a:hover{background:#79c02f !important;color:#fff}
+		
+	.BMap_cpyCtrl,.anchorBL{display:none}
+		
+	.nav_wrap{position:absolute;right:120px;bottom:100px}
+    </style>
+</head>
+
+<body>
+<div class="map_wrap">
+	<div id="allmap"></div>
+	<nav class="m_nav min_nav tc clearfix">
+		<ul class="clearfix">
+			<li>
+				<h2><a class="home" href="javascript:;">首页</a></h2>
+			</li>
+			<li>
+				<h2><a href="javascript:;">新闻动态</a></h2>
+				<div class="nav_con"> <a href="javascript:;">新闻动态</a> <a href="javascript:;">新闻动态</a> <a href="javascript:;">新闻动态</a> </div>
+			</li>
+			<li>
+				<h2><a href="javascript:;">信息公开</a></h2>
+				<div class="nav_con"> <a href="javascript:;">信息公开</a> <a href="javascript:;">信息公开</a> <a href="javascript:;">信息公开</a> <a href="javascript:;">信息公开</a> </div>
+			</li>
+			<li>
+				<h2><a href="javascript:;">法规政策</a></h2>
+				<div class="nav_con"> <a href="javascript:;">法规政策</a> <a href="javascript:;">法规政策</a> </div>
+			</li>
+			<li>
+				<h2><a href="javascript:;">产品展示</a></h2>
+				<div class="nav_con"> <a href="javascript:;">产品展示</a> <a href="javascript:;">产品展示</a> <a href="javascript:;">产品展示</a> <a href="javascript:;">产品展示</a> <a href="javascript:;">产品展示</a> </div>
+			</li>
+		</ul>
+	</nav>
+	<!-- /pageload-overlay --> 
+	<div id="loader" class="pageload-overlay" data-opening="M -18 -26.90625 L -18 86.90625 L 98 86.90625 L 98 -26.90625 L -18 -26.90625 Z M 40 29.96875 C 40.01804 29.96875 40.03125 29.98196 40.03125 30 C 40.03125 30.01804 40.01804 30.03125 40 30.03125 C 39.98196 30.03125 39.96875 30.01804 39.96875 30 C 39.96875 29.98196 39.98196 29.96875 40 29.96875 Z">
+		<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="xMidYMid slice">
+			<path d="M -18 -26.90625 L -18 86.90625 L 98 86.90625 L 98 -26.90625 L -18 -26.90625 Z M 40 -25.6875 C 70.750092 -25.6875 95.6875 -0.7500919 95.6875 30 C 95.6875 60.750092 70.750092 85.6875 40 85.6875 C 9.2499078 85.6875 -15.6875 60.750092 -15.6875 30 C -15.6875 -0.7500919 9.2499078 -25.6875 40 -25.6875 Z"/>
+		</svg>
+	</div>
+	<!-- /pageload-overlay --> 
+</div>
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="js/loading.js" type="text/javascript"></script>
+<script src="js/slide.js" type="text/javascript"></script>
+<script src="js/scrollbar.js" type="text/javascript"></script>
+<script src="layer/layer.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript">
+	
+	loader = new SVGLoader(document.getElementById( 'loader' ), { speedIn :300, easingIn :mina.easeinout } );
+	$("a").click(function(){
+		loader.show();
+		setTimeout( function() {
+			loader.hide();
+		},1000 );
+	})
+	layer.open({
+		type:1,
+		title:false,
+		area:['30%', '60%'],
+		shade:false,
+		offset:'r',
+		anim:2,
+		skin:'layer-rightSpacing',
+		closeBtn:0,
+		content:'<p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p>',
+		cancel:function(index, layero){
+		}
+	});
+	
+	$(".home").click(function(){
+		layer.closeAll();
+		loader.show();
+		setTimeout( function() {
+			loader.hide();
+			//弹出层
+			layer.open({
+				type:1,
+				title:false,
+				area:['30%', '100%'],
+				shade:[.4,'#142a3c'],
+				offset:'r',
+				anim:8,
+				skin:'layer-right',
+				content:'<p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p><p>1234546545646545454564</p><p>145454564</p>',
+				cancel:function(index, layero){
+//					layer.close(index);
+//					loader.show();
+//					setTimeout( function() {
+//						loader.hide();
+//					}, 800 );
+//				  	return false; 
+				}
+			});
+			$(".scroll_wrap,.layui-layer-content").mCustomScrollbar({
+				scrollInertia:600,
+				autoDraggerLength:false
+			});
+		},1000 );
+	})
+	
+	$(".scroll_wrap,.layui-layer-content").mCustomScrollbar({
+		scrollInertia:600,
+		autoDraggerLength:false
+	});
+		
+		/*顶部导航*/
+    $(".m_nav").slide({ type:"menu", titCell:"li", targetCell:".nav_con", delayTime:0, defaultPlay:true, returnDefault:true });
+	</script> 
+<script type="text/javascript">
+    // 百度地图API功能     混合 BMAP_HYBRID_MAP，卫星BMAP_SATELLITE_MAP
+    var map = new BMap.Map("allmap", {
+        mapType:BMAP_SATELLITE_MAP
+    }); // 创建Map实例
+	
+	map.addControl(new BMap.ScaleControl());
+	
+	//显示比例尺
+	map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);    
+	map.addControl(new BMap.NavigationControl());
+	
+    map.centerAndZoom(new BMap.Point(109.948884, 34.867964), 16); // 初始化地图,设置中心点坐标和地图级别
+    //添加地图类型控件
+    map.addControl(new BMap.MapTypeControl({
+        mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]
+    }));
+    map.setCurrentCity("大荔县"); // 设置地图显示的城市 此项是必须设置的
+    map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+    var menu = new BMap.ContextMenu();
+    var txtMenuItem = [{
+        text:'放大',
+        callback:function() {
+            map.zoomIn()
+        }
+    }, {
+        text:'缩小',
+        callback:function() {
+            map.zoomOut()
+        }
+    }, {
+        text:'功能1',
+        callback:function() {
+            map.zoomOut()
+        }
+    }, {
+        text:'功能2',
+        callback:function() {
+            alert('点击了功能2');
+        }
+    }];
+    for (var i = 0; i < txtMenuItem.length; i++) {
+        menu.addItem(new BMap.MenuItem(txtMenuItem[i].text, txtMenuItem[i].callback, 100));
+    }
+    map.addContextMenu(menu);
+    function getBoundary() {
+        var bdary = new BMap.Boundary();
+        bdary.get("渭南市", function(rs) { //获取行政区域
+            // 行政区智能获取区县一级
+            //map.clearOverlays();        //清除地图覆盖物       
+            var count = rs.boundaries.length; //行政区域的点有多少个
+            //console.log(count);
+            if (count === 0) {
+                alert('未能获取当前输入行政区域');
+                return;
+            }
+            var pointArray = [];
+            for (var i = 0; i < count; i++) {
+                var ply = new BMap.Polygon(rs.boundaries[i], {
+                    strokeWeight:5,
+                    strokeColor:"blue",
+                    fillColor:"none",
+                    fillOpacity:"0.1"
+                }); //建立多边形覆盖物
+                map.addOverlay(ply); //添加覆盖物
+                pointArray = pointArray.concat(ply.getPath());
+            }
+            map.setViewport(pointArray); //调整视野  
+
+        });
+
+        bdary.get("渭南市大荔县", function(rs) { //获取行政区域
+            // 行政区智能获取区县一级
+            //map.clearOverlays();        //清除地图覆盖物       
+            var count = rs.boundaries.length; //行政区域的点有多少个
+            //console.log(count);
+            if (count === 0) {
+                alert('未能获取当前输入行政区域');
+                return;
+            }
+            var pointArray = [];
+            for (var i = 0; i < count; i++) {
+                var ply = new BMap.Polygon(rs.boundaries[i], {
+                    strokeWeight:5,
+                    strokeColor:"#ff0000",
+                    fillColor:"none",
+                    fillOpacity:"0.1"
+                }); //建立多边形覆盖物
+                map.addOverlay(ply); //添加覆盖物
+                pointArray = pointArray.concat(ply.getPath());
+            }
+            //map.setViewport(pointArray);    //调整视野  
+
+        });
+		
+        var polygon = new BMap.Polygon([
+            new BMap.Point(109.938679, 34.895681),
+            new BMap.Point(109.91827, 34.885732),
+            new BMap.Point(109.912808, 34.856827),
+            new BMap.Point(109.942991, 34.839527),
+            new BMap.Point(109.958802, 34.837157),
+            new BMap.Point(109.967713, 34.843319),
+            new BMap.Point(109.965988, 34.863699),
+            new BMap.Point(109.961676, 34.872229)
+        ], {
+            strokeColor:"blue",
+            strokeWeight:2,
+            strokeOpacity:0.5,
+            fillColor:"#AFEEEE"
+        }); //创建多边形
+        map.addOverlay(polygon);
+
+
+        var point = new BMap.Point(109.948166, 34.868438);
+        var marker = new BMap.Marker(point); // 创建标注
+        map.addOverlay(marker); // 将标注添加到地图中     
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        var label = new BMap.Label("许庄镇", {
+            offset:new BMap.Size(20, -10)
+        });
+        marker.setLabel(label);
+        var sContent =
+            "<h4 style='margin:0 0 5px 0;padding:0.2em 0'><a href='list.html'>渭南许庄镇</a></h4>" +
+
+            "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>许庄镇目前人口：2万，农作物种植面积：20（万亩）</p>" +
+            "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>农业企业：100家，经济作物种植面积：10（万亩）</p>" +
+            "<p><img style='float:right;margin:4px' id='imgDemo' src='http://www.3nong.com/upLoadFiles/Supply/20150812/ed9df03139574bb98589c7669fef53c9.jpg' width='139' height='104' title='冬枣'/></p>" +
+            "</div>";
+        sContent += " <div id='container' style='height:100%'></div>";
+        var infoWindow2 = new BMap.InfoWindow(sContent);
+        var opts = {
+            width:200, // 信息窗口宽度
+            height:100, // 信息窗口高度
+            title:"徐庄镇", // 信息窗口标题
+            enableMessage:true, //设置允许信息窗发送短息
+            message:"徐庄镇~"
+        }
+        var infoWindow = new BMap.InfoWindow("地址：徐庄镇", opts); // 创建信息窗口对象 
+        //mouseover  click
+        polygon.addEventListener("click", function() {
+
+            alert("点击覆盖物");
+            map.openInfoWindow(infoWindow2, point); //开启信息窗口
+            var point2 = new BMap.Point(109.949387, 34.867313);
+            map.centerAndZoom(point2, 14);
+            map.openInfoWindow(infoWindow2);
+
+            map.setMapType(BMAP_NORMAL_MAP);
+
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            app.title = '环形图';
+
+            option = {
+                tooltip:{
+                    trigger:'item',
+                    formatter:"{a} <br/>{b}:{c} ({d}%)"
+                },
+                legend:{
+                    orient:'vertical',
+                    x:'left',
+                    data:['农田', '水田', '草地', '坡地', '林地']
+                },
+                series:[{
+                    name:'土地类型',
+                    type:'pie',
+                    radius:['50%', '70%'],
+                    avoidLabelOverlap:false,
+                    label:{
+                        normal:{
+                            show:false,
+                            position:'center'
+                        },
+                        emphasis:{
+                            show:true,
+                            textStyle:{
+                                fontSize:'30',
+                                fontWeight:'bold'
+                            }
+                        }
+                    },
+                    labelLine:{
+                        normal:{
+                            show:false
+                        }
+                    },
+                    data:[{
+                        value:335,
+                        name:'农田'
+                    }, {
+                        value:310,
+                        name:'水田'
+                    }, {
+                        value:234,
+                        name:'草地'
+                    }, {
+                        value:135,
+                        name:'坡地'
+                    }, {
+                        value:1548,
+                        name:'林地'
+                    }]
+                }]
+            };;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        });
+
+    }
+    getBoundary();
+    
+	
+	
+	
+    </script>
+</body>
+</html>
