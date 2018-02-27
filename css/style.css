@@ -58,7 +58,7 @@ a,.bot_nav a svg,.left_nav a svg,.m_nav a .icon,.m_nav a span{transition:.3s all
 .i_header{left:50%;margin-left:-123px;line-height:40px;font-size:18px;padding:0 42px;border-radius:0 0 100px 100px;background:rgba(20,46,96,.7);box-shadow:0 -3px 8px #1c92d6 inset;font-weight:300;text-shadow:0 0 6px #42aaeb}
 
 /*top site*/
-.t_site{top:10px;left:300px;border-radius:100px;padding:6px 16px;color:#303234;background:rgba(255,255,255,.9);box-shadow:0 0 6px #1c92d6;font-size:14px}
+.t_site{top:10px;left:260px;border-radius:100px;padding:6px 16px;color:#303234;background:rgba(255,255,255,.9);box-shadow:0 0 6px #1c92d6;font-size:14px}
 .site_wrap{top:54px;left:0;width:300px;border-radius:12px;padding:10px}
 .site_wrap input{width:248px;border-radius:100px;height:32px;padding:0 16px;margin:0 10px 10px;border:1px solid #35b6ff}
 .site_item{overflow:auto;height:240px}
@@ -125,12 +125,6 @@ to{transform:translate(0);-webkit-transform:translate(0);-moz-transform:translat
 
 .bot_nav a:hover,.left_nav a.active,.site_wrap,.m_nav .blob{background:rgba(20,46,96,.5);box-shadow:0 0 15px #1c92d6 inset}
 .m_nav .blob{background:rgba(20,46,96,.8)}
-
-@media (max-width:540px) {
-	.popup_nav{right:51%}
-    .layui-layer{width:50% !important}
-	.layer-rightSpacing{right:50px}
-}
 
 @font-face {font-family:"datafont";
   src:url('datafont.eot?t=1519697601974'); /* IE9*/
