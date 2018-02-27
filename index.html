@@ -3,24 +3,11 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!--    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <title>大荔县数据管理平台</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<link href='css/elusive-webfont.css' rel='stylesheet' type='text/css'>
 	<script src="js/icon.js"></script>
-    <style>
-    .map_wrap{position:relative;width:100%;height:100%}
-
-    .m_nav{position:absolute;width:90px;height: 90px;line-height: 90px;background:rgba(0,0,0,.5);z-index:99999;top:20px;left:30px;border-radius: 100px}
-	.nav_con{position:absolute;top:52px;left:0;z-index:66666;width:100%;display:none;background:#ecf0e8;font-size:16px;background:#5da92f;border-radius:0 0 6px 6px;overflow:hidden;padding:6px 0}
-	.nav_con a{display:block;border-bottom:1px solid #8bbb59;border-bottom:1px solid #8bbb59;line-height:40px;color:#fff;padding:5px 24px !important}
-	.nav_con a:hover{background:#79c02f !important;color:#fff}
-		
-	.BMap_cpyCtrl,.anchorBL{display:none}
-		
-	.nav_wrap{position:absolute;right:120px;bottom:100px}
-    </style>
 </head>
 
 <body>
@@ -30,11 +17,26 @@
 	<!--title-->
 	<h1 class="i_header white pa t0">农政管理大数据平台</h1>
 	<!--nav-->
+	<div class='m_nav tc'>
+		<input class="hide" type='checkbox' id='checking'/>
+		<a class='blob blob2-1' href="javascript:;"><i class="icon icon-m1"></i><span>基本<br>情况</span></a>
+		<a class='blob blob2-2' href="javascript:;"><i class="icon icon-m2"></i><span>产业<br>分布</span></a>
+		<a class='blob blob2-3' href="javascript:;"><i class="icon icon-m3"></i><span>数据<br>分析</span></a>
+		<a class='blob blob2-4' href="javascript:;"><i class="icon icon-m4"></i><span>农产品<br>质量监管</span></a>
+		<a class='blob blob2-5' href="javascript:;"><i class="icon icon-m5"></i><span>产业<br>扶贫</span></a>
+		<label class='blob' for='checking'>
+		  <span class='bar'></span>      
+		  <span class='bar'></span>
+		  <span class='bar'></span>
+		</label>
+	  </div>  
+<!--
 	<nav class="m_nav tc clearfix white">
 		<a class="home" href="javascript:;">首页</a>
 	</nav>
+-->
 	<div class="t_site pa">
-		<a class="site_link tc" href="javascript:;">城关街道</a>
+		<a class="site_link tc" href="javascript:;"><i class="i i_pos"></i>冯雷镇</a>
 		<div class="site_wrap pa white hide">
 			<i class="i i_arrow pa"></i>
 			<input type="text" placeholder="请输入地区名称...">
@@ -241,19 +243,40 @@
 <script src="layer/layer.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
 <script type="text/javascript">
+	//主导航
+	$(document).click(function(e){
+		var _con = $('.m_nav');
+  		if(!_con.is(e.target) && _con.has(e.target).length === 0){
+        	$('.m_nav input').attr("checked", false)
+  		}
+	});
+	
+	//左侧导航
 	$(".left_nav a").click(function(){
 		$(this).toggleClass("active")
 	})
 	
-	//top site
-	$(document).click(function(){$('.site_wrap').fadeOut()});
+	//顶部位置选择
+	$(document).click(function(e){
+		var _con = $('.t_site');
+  		if(!_con.is(e.target) && _con.has(e.target).length === 0){
+        	$('.site_wrap').fadeOut()
+  		}
+	});
 	$(".site_link").click(function(){
-		$(this).next(".site_wrap").fadeIn();
-		event.stopPropagation();
+		
+		$(this).next(".site_wrap").fadeToggle();
+		//滚动条美化
+		var hasScroll=$(this).parent().find(".site_item").hasClass("mCustomScrollbar");
+		if(hasScroll==false){
+			$(".site_item").mCustomScrollbar({
+				scrollInertia:600,
+				autoDraggerLength:false
+			});
+		}
 	})
 	
-	
-	//loading
+	//loading动画效果
 	loader = new SVGLoader(document.getElementById( 'loader' ), { speedIn :300, easingIn :mina.easeinout } );
 	layer.open({
 		title: '在线调试',
@@ -269,8 +292,9 @@
 		cancel:function(index, layero){
 		}
 	});
-
-	$(".home").click(function(){
+	
+	//右侧弹窗效果
+	$(".m_nav a").click(function(){
 		layer.closeAll();
 		loader.show();
 		setTimeout( function() {
@@ -300,15 +324,12 @@
 			});
 		},1000 );
 	})
-
-	$(".scroll_wrap,.layer_wrap,.site_item").mCustomScrollbar({
+	
+	$(".scroll_wrap,.layer_wrap").mCustomScrollbar({
 		scrollInertia:600,
 		autoDraggerLength:false
 	});
-
-		/*顶部导航*/
-	$(".m_nav").slide({ type:"menu", titCell:"li", targetCell:".nav_con", delayTime:0, defaultPlay:true, returnDefault:true });
-</script> 
+</script>
 	
 <script type="text/javascript">
     // 百度地图API功能     混合 BMAP_HYBRID_MAP，卫星BMAP_SATELLITE_MAP
